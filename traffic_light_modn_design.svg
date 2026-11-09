@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f5f8fc"/><stop offset="1" stop-color="#e8eef6"/></linearGradient>
+  <linearGradient id="head" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#132b45"/><stop offset="1" stop-color="#245477"/></linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#16324a" flood-opacity=".12"/></filter>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#45647e"/></marker>
+  <style>
+    .h1{font:700 38px Arial,sans-serif;fill:#fff}.sub{font:16px Arial,sans-serif;fill:#dceaf5}.section{font:700 21px Arial,sans-serif;fill:#18344d}.body{font:16px Arial,sans-serif;fill:#30495f}.small{font:14px Arial,sans-serif;fill:#40596d}.tiny{font:12px Arial,sans-serif;fill:#526a7d}.box{fill:#fff;stroke:#c8d5e1;stroke-width:2;rx:14;filter:url(#shadow)}.node{fill:#f5f9fc;stroke:#9eb5c8;stroke-width:2;rx:12}.line{stroke:#45647e;stroke-width:3;fill:none;marker-end:url(#arrow)}.tablehead{fill:#e6eef5}.tableline{stroke:#d2dde7;stroke-width:1.5}
+  </style>
+</defs>
+<rect width="1600" height="1100" fill="url(#bg)"/>
+<rect x="0" y="0" width="1600" height="145" fill="url(#head)"/>
+<text x="70" y="62" class="h1">TRAFFIC-LIGHT CONTROLLER</text>
+<text x="70" y="108" class="h1" style="font-size:29px">+ MOD-N COUNTER</text>
+<text x="1530" y="58" text-anchor="end" class="sub">CAPSTONE PROJECT · DESIGN DOCUMENT</text>
+<text x="1530" y="105" text-anchor="end" class="sub">Aadit Kamble</text>
+
+<!-- objective -->
+<rect x="60" y="175" width="1480" height="105" class="box"/>
+<text x="90" y="212" class="section">PROJECT OVERVIEW</text>
+<text x="90" y="244" class="body">A finite-state traffic-light controller uses a Mod-N counter to measure each signal phase duration and advance safely through the sequence.</text>
+
+<!-- architecture -->
+<rect x="60" y="310" width="1480" height="330" class="box"/>
+<text x="90" y="350" class="section">1. SYSTEM BLOCK DIAGRAM</text>
+<rect x="105" y="405" width="220" height="115" class="node"/>
+<text x="215" y="445" text-anchor="middle" class="section" style="font-size:18px">Clock</text><text x="215" y="475" text-anchor="middle" class="small">Periodic clock input</text>
+<rect x="405" y="405" width="260" height="115" class="node"/>
+<text x="535" y="445" text-anchor="middle" class="section" style="font-size:18px">Mod-N Counter</text><text x="535" y="475" text-anchor="middle" class="small">Counts 0 to N−1</text>
+<rect x="745" y="405" width="280" height="115" class="node"/>
+<text x="885" y="445" text-anchor="middle" class="section" style="font-size:18px">Terminal Count</text><text x="885" y="475" text-anchor="middle" class="small">Pulse when count = N−1</text>
+<rect x="1105" y="405" width="340" height="115" class="node"/>
+<text x="1275" y="445" text-anchor="middle" class="section" style="font-size:18px">Traffic-Light FSM</text><text x="1275" y="475" text-anchor="middle" class="small">Changes signal state</text>
+<path d="M325 462 H400 M665 462 H740 M1025 462 H1100" class="line"/>
+<path d="M1275 520 V575 H535 V525" class="line"/>
+<text x="905" y="568" text-anchor="middle" class="tiny">State transition resets / restarts counter</text>
+<text x="215" y="550" text-anchor="middle" class="tiny">Clock drives counting</text>
+
+<!-- state sequence -->
+<rect x="60" y="670" width="720" height="350" class="box"/>
+<text x="90" y="710" class="section">2. SIGNAL SEQUENCE &amp; STATE TABLE</text>
+<rect x="90" y="735" width="660" height="42" class="tablehead" rx="7"/>
+<text x="115" y="762" class="body" style="font-weight:bold">State</text><text x="280" y="762" class="body" style="font-weight:bold">North/South</text><text x="510" y="762" class="body" style="font-weight:bold">East/West</text>
+<path d="M90 777 H750 M90 837 H750 M90 897 H750 M90 957 H750" class="tableline"/>
+<g class="body"><text x="115" y="815">S0</text><text x="280" y="815" fill="#16834a">GREEN</text><text x="510" y="815" fill="#c43b36">RED</text><text x="115" y="875">S1</text><text x="280" y="875" fill="#c58a18">YELLOW</text><text x="510" y="875" fill="#c43b36">RED</text><text x="115" y="935">S2</text><text x="280" y="935" fill="#c43b36">RED</text><text x="510" y="935" fill="#16834a">GREEN</text><text x="115" y="995">S3</text><text x="280" y="995" fill="#c43b36">RED</text><text x="510" y="995" fill="#c58a18">YELLOW</text></g>
+<text x="90" y="1045" class="tiny">After S3, return to S0. Only one direction receives GREEN at a time.</text>
+
+<!-- design notes -->
+<rect x="810" y="670" width="730" height="350" class="box"/>
+<text x="840" y="710" class="section">3. DESIGN NOTES</text>
+<text x="845" y="755" class="body">• Counter width: k = ⌈log₂(N)⌉ bits</text>
+<text x="845" y="795" class="body">• Count sequence: 0, 1, 2, …, N−1, then wrap to 0</text>
+<text x="845" y="835" class="body">• Terminal-count condition: count = N−1</text>
+<text x="845" y="875" class="body">• On terminal count, advance FSM to the next state</text>
+<text x="845" y="915" class="body">• Reset initializes FSM to S0 and counter to 0</text>
+<text x="845" y="955" class="body">• Use a synchronized, debounced reset if using a physical switch</text>
+<text x="845" y="995" class="small">Timing: each phase lasts N clock cycles (or a prescaled interval).</text>
+
+<text x="800" y="1075" text-anchor="middle" class="tiny">Design is parameterized: select N and the clock/prescaler to set the required phase duration.</text>
+</svg>
